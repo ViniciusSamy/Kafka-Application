@@ -27,5 +27,18 @@ Example:
 
 
 ---
+## Cosumer
+Dummy consumer of kafka content. (Only read from 1 partition) 
+
+> python3 Consumer.py |Name| |Topic| |ServerIP| |ServerPort| |IdPartition|
+- **Name**: Name used to indentify this program on Kafka Server(str)
+- **Topic**: Name of topic from which Consumer reads (str)
+- **ServerIP**: Ip of Kafka server thats topic is storaged (str)
+- **ServerPort**: Port of Kafka server thats topic is storaged (str)
+- **IdPartitionControl**: Id of partition from which Consumer reads int)
+
+
+
+
 ## Rules
  - Topic thas represent the Object must have ate leats 2 partitions, one for control e one for Object representation
