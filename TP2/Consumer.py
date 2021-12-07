@@ -31,7 +31,6 @@ while True:
     print(msg.value.decode())
 
 
-
 # # obtain the last offset value
 # consumer.assign(tp_content)
 # consumer.seek_to_end(tp_content[0])

@@ -66,7 +66,6 @@ class Writter:
         self.producer.flush()
 
 
-
         #-----WAITING-----#
         first = None                    #First element of queue
         time_request = time()           #Time(seconds) request
@@ -140,14 +139,15 @@ class Writter:
                 print(message.value)
                 if message.offset == sizeOffset - 1:
                     break
+            #Return object (encoded)
+            return True, "Success(ObjectReturned)", message.value
 
         #If has no last content
         else:
             return False, "Error(ContentNotFinded)", None
         
 
-        #Return object (encoded)
-        return True, "Success(ObjectReturned)", message.value
+        
 
 
     #Commit object after changes 
@@ -213,7 +213,6 @@ class Writter:
         print( "\tpartition_content:", self.partition_content)
         print("}")
         
-
 
 def routine(prefix_name, sufix_name, repeats, timeout, servers, topic, partition_control, partition_content ):
 
