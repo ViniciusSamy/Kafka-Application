@@ -101,6 +101,10 @@ class Writter:
                 if valid_offset:
                     requests_history.append(( message.value.decode().split(":"), message.offset ))
 
+                
+
+
+
                 #Break on last message
                 if message.offset == sizeOffset - 1:
                     break
@@ -170,8 +174,8 @@ class Writter:
 
         #Verify current state of offset
         states = {}
-        for i in range(len(offset[0])):
-            case, user_id = offset[0][i]
+        for i in range(len(offset)):
+            (case, user_id), _ = offset
             states[user_id] = None if case == "done" else offset[1][i]
         #Store only offset on going
         offset = [ (states[key], key) for key in states.keys() if states[key] != None ]
