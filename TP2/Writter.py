@@ -114,8 +114,8 @@ class Writter:
             else:
                 return False, "Error(Empty Queue)"
 
-
-        print(f"\nNext: {{name: {queue[1][1]}, offset:{queue[1][0]}}}\n")
+        if len(queue) >= 2:
+            print(f"\nNext: {{name: {queue[1][1]}, offset:{queue[1][0]}}}\n")
         return True, "Success(Request)"
 
 
