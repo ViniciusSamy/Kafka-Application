@@ -107,7 +107,6 @@ class Writter:
             #Get queue of pending clients then first client
             #print(requests_history)
             queue = self.get_queue(requests_history)
-            print("QUEUE", queue)
             #print(queue)
             if queue:
                 _, first = queue[0]
@@ -115,6 +114,9 @@ class Writter:
                 return False, "Error(Empty Queue)"
 
 
+        print("QUEUE --> ", queue)
+        print()
+        print()
         return True, "Success(Request)"
 
 
