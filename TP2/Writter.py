@@ -103,6 +103,7 @@ class Writter:
 
                 #Break on last message
                 if message.offset == sizeOffset - 1:
+                    print("ok")
                     break
             
             #Get queue of pending clients then first client
