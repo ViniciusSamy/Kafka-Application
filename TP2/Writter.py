@@ -241,7 +241,9 @@ def routine(prefix_name, sufix_name, repeats, timeout, servers, topic, partition
         account.checking_balance = account.checking_balance + random_value 
         #Encode Object
         obj = account.toJson().encode()
-        sleep( random.randint(0,timeout*2) )
+
+        if random.random() > 0.5 :
+            sleep(timeout+1)
 
         #Commit
         success, msg = w1.commit_content(obj)
