@@ -166,10 +166,11 @@ class Writter:
 
     #From raw control offsets get queue with pending requests 
     def get_queue(self,offset):
-    
+        print(offset)
+
         #Verify current state of offset
         states = {}
-        for i in range(offset[0]):
+        for i in range(len(offset[0])):
             case, user_id = offset[0][i]
             states[user_id] = None if case == "done" else offset[1][i]
         #Store only offset on going
