@@ -242,8 +242,8 @@ def routine(prefix_name, sufix_name, repeats, timeout, servers, topic, partition
         #Encode Object
         obj = account.toJson().encode()
 
-        if random.random() > 0.5 :
-            sleep(timeout+1)
+        # if random.random() > 0.75:
+        #     sleep(timeout+1)
 
         #Commit
         success, msg = w1.commit_content(obj)
