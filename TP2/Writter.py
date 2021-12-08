@@ -70,9 +70,9 @@ class Writter:
         first = None                    #First element of queue
         
         time_request = time()           #Time(seconds) request
-        date_request = datetime.now()   #Date of request
-        valid_date_past = date_request-relativedelta(seconds=timeout)
-        self.valid_date_future = date_request+relativedelta(seconds=timeout) #Project data in reason of timeout
+        self.date_request = datetime.now()   #Date of request
+        valid_date_past = self.date_request-relativedelta(seconds=timeout)
+        self.valid_date_future = self.date_request+relativedelta(seconds=timeout) #Project data in reason of timeout
         #print("VALID_DATE", valid_date)
         
         while first != self.id_producer:
@@ -110,14 +110,12 @@ class Writter:
             queue = self.get_queue(requests_history)
             #print(queue)
             if queue:
-                _, first = queue[0]
+                self.offset, first = queue[0]
             else:
                 return False, "Error(Empty Queue)"
 
 
-        print("QUEUE --> ", queue)
-        print()
-        print()
+        print("Fist --> ", queue[0])
         return True, "Success(Request)"
 
 
@@ -148,7 +146,6 @@ class Writter:
     #Commit object after changes 
     def commit_content(self, message):
         date_now = datetime.now()
-        print(f"{date_now} > {self.valid_date_future}")
         if date_now > self.valid_date_future:
             return False, "Menssage(Invalid Operation - Timeout)"
 
@@ -221,7 +218,10 @@ def routine(prefix_name, sufix_name, repeats, timeout, servers, topic, partition
         w1 = Writter(servers, topic, f"{prefix_name + sufix_name}", f"{prefix_name + sufix_name}", partition_control, partition_content)
         #w1.print()
 
+        
         success, msg = w1.request(timeout=timeout)
+        print(f"{{status:request, client:{prefix_name + sufix_name}, offset: {w1.offset}, time: {w1.date_request}  }}")
+
         if not success:
             sys.exit()
         
@@ -244,8 +244,8 @@ def routine(prefix_name, sufix_name, repeats, timeout, servers, topic, partition
         #Encode Object
         obj = account.toJson().encode()
 
-        # if random.random() > 0.75:
-        #     sleep(timeout+1)
+        if random.random() > 0.85:
+            sleep(timeout+1)
 
         #Commit
         success, msg = w1.commit_content(obj)
@@ -256,7 +256,8 @@ def routine(prefix_name, sufix_name, repeats, timeout, servers, topic, partition
 
         #Done
         success, msg = w1.done()
-        
+        print(f"{{status:done, client:{prefix_name + sufix_name}, offset: {w1.offset}, time: {datetime.now()}  }}")
+
         #Simulate waiting
         sleep( random.randint(0,3) )  
 
