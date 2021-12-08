@@ -106,9 +106,9 @@ class Writter:
                     break
             
             #Get queue of pending clients then first client
-            print(requests_history)
+            #print(requests_history)
             queue = self.get_queue(requests_history)
-            #print(queue)
+            print(queue)
             if queue:
                 self.offset, first = queue[0]
             else:
