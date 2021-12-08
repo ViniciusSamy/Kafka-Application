@@ -107,6 +107,7 @@ class Writter:
             #Get queue of pending clients then first client
             #print(requests_history)
             queue = self.get_queue(requests_history)
+            print("QUEUE", queue)
             #print(queue)
             if queue:
                 _, first = queue[0]
@@ -130,7 +131,7 @@ class Writter:
             #Points to last element
             self.consumer.seek(self.tp_content[0], sizeOffset-1)
             for message in self.consumer:
-                print(message.value)
+                #print(message.value)
                 if message.offset == sizeOffset - 1:
                     break
             #Return object (encoded)
