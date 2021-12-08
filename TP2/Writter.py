@@ -258,7 +258,7 @@ def routine(prefix_name, sufix_name, repeats, timeout, servers, topic, partition
         success, msg = w1.done()
         
         #Simulate wating
-        sleep( random.randint(0,timeout) )  
+        sleep( random.randint(0,3) )  
 
 
 
