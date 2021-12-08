@@ -94,7 +94,7 @@ class Writter:
                 #Verify if current event is valid
                 offset_date = datetime.fromtimestamp(message.timestamp/1000.0)
                 #Only consider valid requests on partition
-                valid_offset = offset_date > valid_date
+                valid_offset = offset_date > self.valid_date
                 
                 #Store valid requests
                 if valid_offset:
