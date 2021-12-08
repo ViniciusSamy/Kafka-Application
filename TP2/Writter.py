@@ -71,7 +71,7 @@ class Writter:
         
         time_request = time()           #Time(seconds) request
         date_request = datetime.now()   #Date of request
-        valid_date = date_request-relativedelta(seconds=timeout) #Project data in reason of timeout
+        self.valid_date = date_request-relativedelta(seconds=timeout) #Project data in reason of timeout
         #print("VALID_DATE", valid_date)
         
         while first != self.id_producer:
@@ -146,6 +146,11 @@ class Writter:
 
     #Commit object after changes 
     def commit_content(self, message):
+        date_now = datetime.now()
+        if date_now > self.valid_date:
+            return False, "Menssage(Invalid Operation - Timeout)"
+
+
         self.producer.send(self.topic, message, partition=self.partition_content)
         self.producer.flush()
         return True, "Success(MenssageSended)"
@@ -211,19 +216,14 @@ class Writter:
 def routine(prefix_name, sufix_name, repeats, timeout, servers, topic, partition_control, partition_content ):
 
     for _ in range(repeats):
-        #print("-------CREATE-CONNECTION------")
         w1 = Writter(servers, topic, f"{prefix_name + sufix_name}", f"{prefix_name + sufix_name}", partition_control, partition_content)
         #w1.print()
 
-        #print("-------REQUESTING-OBJECT-------")
         success, msg = w1.request(timeout=timeout)
-        #print(msg)
         if not success:
             sys.exit()
         
-        #print("-------CHANGING-OBJECT-------")
         success, msg, obj = w1.get_content()
-        #print(msg)
 
         #If the object not exists
         if not success and msg == "Error(ContentNotFinded)":
@@ -237,25 +237,24 @@ def routine(prefix_name, sufix_name, repeats, timeout, servers, topic, partition
         account = BankAccount(json=obj_json)
 
         #Deposit or Withdraw  on account
-        #print(f"Checking Balance: {account.checking_balance} -> ", end="")
         random_value = random.randint(-10,10)
-        #print(f"{account.checking_balance} + {random_value} -> ", end="")
         account.checking_balance = account.checking_balance + random_value 
-        #print(f"{account.checking_balance}")
         #Encode Object
         obj = account.toJson().encode()
+        sleep( random.randint(0,timeout*2) )
 
-        #print("-------COMMITING-OBJECT-------")
+        #Commit
         success, msg = w1.commit_content(obj)
-        #print(msg)
-        if not success:
+        if not success and msg == "Menssage(Invalid Operation - Timeout)" :
+            print(msg)
+        else:
             sys.exit()
 
-        #print("-------RELEADING-OBJECT-------")
+        #Done
         success, msg = w1.done()
-        #print(msg)
-        if not success:
-            sys.exit()
+        
+        #Simulate wating
+        sleep( random.randint(0,timeout) )  
 
 
 
@@ -289,3 +288,4 @@ if __name__ == "__main__":
     for i in range(num_threads):
         Thread(target= routine, args=(prefix_name, f"{i+1}", repeats, timeout,  server, topic, partition_control, partition_content, )).start()
         sleep(5)
+
