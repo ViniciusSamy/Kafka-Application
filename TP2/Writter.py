@@ -68,10 +68,12 @@ class Writter:
 
         #-----WAITING-----#
         first = None                    #First element of queue
+        
         time_request = time()           #Time(seconds) request
         date_request = datetime.now()   #Date of request
         valid_date = date_request-relativedelta(seconds=timeout) #Project data in reason of timeout
-        print("VALID_DATE", valid_date)
+        #print("VALID_DATE", valid_date)
+        
         while first != self.id_producer:
             #Verify timeout
             if  time() - time_request > timeout: 
@@ -93,15 +95,7 @@ class Writter:
                 offset_date = datetime.fromtimestamp(message.timestamp/1000.0)
                 #Only consider valid requests on partition
                 valid_offset = offset_date > valid_date
-                    
-                # print("------------------------")
-                # print("Offset:", message.offset)
-                # print("Value:", message.value)
-                # print("Timestamp:", message.timestamp)
-                # print("Date:", datetime.fromtimestamp(message.timestamp/1000.0))
-                # print("Valid:", valid_offset)
                 
-
                 #Store valid requests
                 if valid_offset:
                     requests_history.append(message.value.decode().split(":"))
@@ -146,9 +140,6 @@ class Writter:
         else:
             return False, "Error(ContentNotFinded)", None
         
-
-        
-
 
     #Commit object after changes 
     def commit_content(self, message):
@@ -217,19 +208,19 @@ class Writter:
 def routine(prefix_name, sufix_name, repeats, timeout, servers, topic, partition_control, partition_content ):
 
     for _ in range(repeats):
-        print("-------CREATE-CONNECTION------")
+        #print("-------CREATE-CONNECTION------")
         w1 = Writter(servers, topic, f"{prefix_name + sufix_name}", f"{prefix_name + sufix_name}", partition_control, partition_content)
-        w1.print()
+        #w1.print()
 
-        print("-------REQUESTING-OBJECT-------")
+        #print("-------REQUESTING-OBJECT-------")
         success, msg = w1.request(timeout=timeout)
-        print(msg)
+        #print(msg)
         if not success:
             sys.exit()
         
-        print("-------CHANGING-OBJECT-------")
+        #print("-------CHANGING-OBJECT-------")
         success, msg, obj = w1.get_content()
-        print(msg)
+        #print(msg)
 
         #If the object not exists
         if not success and msg == "Error(ContentNotFinded)":
@@ -243,23 +234,23 @@ def routine(prefix_name, sufix_name, repeats, timeout, servers, topic, partition
         account = BankAccount(json=obj_json)
 
         #Deposit or Withdraw  on account
-        print(f"Checking Balance: {account.checking_balance} -> ", end="")
+        #print(f"Checking Balance: {account.checking_balance} -> ", end="")
         random_value = random.randint(-10,10)
-        print(f"{account.checking_balance} + {random_value} -> ", end="")
+        #print(f"{account.checking_balance} + {random_value} -> ", end="")
         account.checking_balance = account.checking_balance + random_value 
-        print(f"{account.checking_balance}")
+        #print(f"{account.checking_balance}")
         #Encode Object
         obj = account.toJson().encode()
 
-        print("-------COMMITING-OBJECT-------")
+        #print("-------COMMITING-OBJECT-------")
         success, msg = w1.commit_content(obj)
-        print(msg)
+        #print(msg)
         if not success:
             sys.exit()
 
-        print("-------RELEADING-OBJECT-------")
+        #print("-------RELEADING-OBJECT-------")
         success, msg = w1.done()
-        print(msg)
+        #print(msg)
         if not success:
             sys.exit()
 

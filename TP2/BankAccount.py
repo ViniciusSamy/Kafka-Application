@@ -25,6 +25,13 @@ class BankAccount:
     def print(self):
         print(f"Bank Account -> Holder: {self.holder}  |  Checking Balance: {self.checking_balance}  |  Savings Balance: {self.savings_balance}")
 
+
+
+
+
+
+
+
 if __name__ == "__main__":
     account = BankAccount(holder="Vinicius", checking_balance=100.0, savings_balance=800.0)
     print(account.toJson())
