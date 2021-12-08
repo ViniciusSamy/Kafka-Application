@@ -112,7 +112,7 @@ class Writter:
             #Get queue of pending clients then first client
             #print(requests_history)
             queue = self.get_queue(requests_history)
-            print(queue)
+            #print(queue)
             if queue:
                 self.offset, first = queue[0]
             else:
@@ -170,8 +170,6 @@ class Writter:
 
     #From raw control offsets get queue with pending requests 
     def get_queue(self,offset):
-        print(offset)
-
         #Verify current state of offset
         states = {}
         for i in range(len(offset)):
