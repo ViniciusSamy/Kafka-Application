@@ -99,14 +99,14 @@ class Writter:
                 
                 #Store valid requests
                 if valid_offset:
-                    requests_history.append(message.value.decode().split(":"))
+                    requests_history.append(( message.value.decode().split(":"), message.offset ))
 
                 #Break on last message
                 if message.offset == sizeOffset - 1:
                     break
             
             #Get queue of pending clients then first client
-            #print(requests_history)
+            print(requests_history)
             queue = self.get_queue(requests_history)
             #print(queue)
             if queue:
@@ -169,10 +169,9 @@ class Writter:
     
         #Verify current state of offset
         states = {}
-        index = 0 
-        for case, user_id in offset :
-            states[user_id] = None if case == "done" else index
-            index += 1
+        for i in range(offset[0]):
+            case, user_id = offset[0][i]
+            states[user_id] = None if case == "done" else offset[1][i]
         #Store only offset on going
         offset = [ (states[key], key) for key in states.keys() if states[key] != None ]
         offset.sort(key=lambda x: x[0])
