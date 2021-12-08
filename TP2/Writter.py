@@ -175,8 +175,9 @@ class Writter:
         #Verify current state of offset
         states = {}
         for i in range(len(offset)):
-            (case, user_id), _ = offset
-            states[user_id] = None if case == "done" else offset[1][i]
+            case_id, off_number = offset[i]
+            case, user_id = case_id
+            states[user_id] = None if case == "done" else off_number
         #Store only offset on going
         offset = [ (states[key], key) for key in states.keys() if states[key] != None ]
         offset.sort(key=lambda x: x[0])
