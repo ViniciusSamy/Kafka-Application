@@ -71,7 +71,8 @@ class Writter:
         
         time_request = time()           #Time(seconds) request
         date_request = datetime.now()   #Date of request
-        self.valid_date = date_request-relativedelta(seconds=timeout) #Project data in reason of timeout
+        valid_date_past = date_request-relativedelta(seconds=timeout)
+        self.valid_date_future = date_request+relativedelta(seconds=timeout) #Project data in reason of timeout
         #print("VALID_DATE", valid_date)
         
         while first != self.id_producer:
@@ -94,7 +95,7 @@ class Writter:
                 #Verify if current event is valid
                 offset_date = datetime.fromtimestamp(message.timestamp/1000.0)
                 #Only consider valid requests on partition
-                valid_offset = offset_date > self.valid_date
+                valid_offset = offset_date > valid_date_past
                 
                 #Store valid requests
                 if valid_offset:
@@ -147,7 +148,8 @@ class Writter:
     #Commit object after changes 
     def commit_content(self, message):
         date_now = datetime.now()
-        if date_now > self.valid_date:
+        print(f"{date_now} > {self.valid_date_future}")
+        if date_now > self.valid_date_future:
             return False, "Menssage(Invalid Operation - Timeout)"
 
 
@@ -290,4 +292,6 @@ if __name__ == "__main__":
     for i in range(num_threads):
         Thread(target= routine, args=(prefix_name, f"{i+1}", repeats, timeout,  server, topic, partition_control, partition_content, )).start()
         sleep(5)
+
+
 
