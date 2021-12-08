@@ -112,13 +112,13 @@ class Writter:
             #Get queue of pending clients then first client
             #print(requests_history)
             queue = self.get_queue(requests_history)
-            print(queue)
             if queue:
                 self.offset, first = queue[0]
             else:
                 return False, "Error(Empty Queue)"
 
 
+        print("queue:", queue)
         if len(queue) >= 2:
             print(f"\nNext: {{name: {queue[1][1]}, offset:{queue[1][0]}}}\n")
         return True, "Success(Request)"
