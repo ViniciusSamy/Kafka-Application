@@ -288,8 +288,4 @@ if __name__ == "__main__":
 
     for i in range(num_threads):
         Thread(target= routine, args=(prefix_name, f"{i+1}", repeats, timeout,  server, topic, partition_control, partition_content, )).start()
-
-
-
-    
-
+        sleep(5)
