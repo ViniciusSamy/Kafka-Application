@@ -103,7 +103,6 @@ class Writter:
 
                 #Break on last message
                 if message.offset == sizeOffset - 1:
-                    print("ok")
                     break
             
             #Get queue of pending clients then first client
@@ -252,7 +251,7 @@ def routine(prefix_name, sufix_name, repeats, timeout, servers, topic, partition
         success, msg = w1.commit_content(obj)
         if not success and msg == "Menssage(Invalid Operation - Timeout)" :
             print(msg)
-        else:
+        elif not success:
             sys.exit()
 
         #Done
