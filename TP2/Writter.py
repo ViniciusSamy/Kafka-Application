@@ -118,7 +118,7 @@ class Writter:
 
         if len(queue) >= 2:
             print(f"Actual: {{name: {queue[0][1]}, offset:{queue[0][0]}}}")
-            print(f"Next: {{name: {queue[1][1]}, offset:{queue[1][0]}}}\n")
+            print(f"Next: {{name: {queue[1][1]}, offset:{queue[1][0]}}}")
         return True, "Success(Request)"
 
 
@@ -257,7 +257,7 @@ def routine(prefix_name, sufix_name, repeats, timeout, servers, topic, partition
 
         #Done
         success, msg = w1.done()
-        print(f"{{status:done, client:{prefix_name + sufix_name}, offset: {w1.offset}, time: {datetime.now()}  }}")
+        print(f"{{status:done, client:{prefix_name + sufix_name}, offset: {w1.offset}, time: {datetime.now()}  }}\n")
 
         #Simulate waiting
         sleep( random.randint(0,3) )  
