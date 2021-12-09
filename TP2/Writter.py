@@ -73,7 +73,6 @@ class Writter:
         self.date_request = datetime.now()   #Date of request
         valid_date_past = self.date_request-relativedelta(seconds=timeout)
         self.valid_date_future = self.date_request+relativedelta(seconds=timeout) #Project data in reason of timeout
-        #print("VALID_DATE", valid_date)
         
         while first != self.id_producer:
             #Verify timeout
@@ -110,7 +109,6 @@ class Writter:
                     break
             
             #Get queue of pending clients then first client
-            #print(requests_history)
             queue = self.get_queue(requests_history)
             if queue:
                 self.offset, first = queue[0]
@@ -118,9 +116,9 @@ class Writter:
                 return False, "Error(Empty Queue)"
 
 
-        print("queue:", queue)
         if len(queue) >= 2:
-            print(f"\nNext: {{name: {queue[1][1]}, offset:{queue[1][0]}}}\n")
+            print(f"Actual: {{name: {queue[0][1]}, offset:{queue[0][0]}}}")
+            print(f"Next: {{name: {queue[1][1]}, offset:{queue[1][0]}}}\n")
         return True, "Success(Request)"
 
 
@@ -137,7 +135,6 @@ class Writter:
             #Points to last element
             self.consumer.seek(self.tp_content[0], sizeOffset-1)
             for message in self.consumer:
-                #print(message.value)
                 if message.offset == sizeOffset - 1:
                     break
             #Return object (encoded)
