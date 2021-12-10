@@ -79,7 +79,6 @@ class Writter:
             if  time() - time_request > timeout: 
                 return False, "Error(Timeout)"
 
-
             #Assign consumer to partition of control
             self.consumer.assign(self.tp_control)
 
@@ -224,6 +223,7 @@ def routine(prefix_name, sufix_name, repeats, timeout, servers, topic, partition
         print(f"{{status:request, client:{prefix_name + sufix_name}, offset: {w1.offset}, time: {w1.date_request}  }}")
 
         if not success:
+            print(msg)
             sys.exit()
         
         success, msg, obj = w1.get_content()
@@ -233,6 +233,7 @@ def routine(prefix_name, sufix_name, repeats, timeout, servers, topic, partition
             account = BankAccount(holder=prefix_name, checking_balance=100.0, savings_balance=800.0)
             obj = account.toJson().encode()
         elif not success:
+            print(msg)
             sys.exit()
         
         #Decode Object
@@ -253,6 +254,7 @@ def routine(prefix_name, sufix_name, repeats, timeout, servers, topic, partition
         if not success and msg == "Menssage(Invalid Operation - Timeout)" :
             print(msg)
         elif not success:
+            print(msg)
             sys.exit()
 
         #Done
