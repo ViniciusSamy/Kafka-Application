@@ -68,16 +68,16 @@ class Writter:
 
         #-----WAITING-----#
         first = None                    #First element of queue
-        
-        time_request = time()           #Time(seconds) request
+
+        # time_request = time()           #Time(seconds) request
         self.date_request = datetime.now()   #Date of request
         valid_date_past = self.date_request-relativedelta(seconds=timeout)
         self.valid_date_future = self.date_request+relativedelta(seconds=timeout) #Project data in reason of timeout
         
         while first != self.id_producer:
             #Verify timeout
-            if  time() - time_request > timeout: 
-                return False, "Error(Timeout)"
+            # if  time() - time_request > timeout:  # timeout = 15, 
+            #     return False, "Error(Timeout)"
 
             #Assign consumer to partition of control
             self.consumer.assign(self.tp_control)
@@ -118,6 +118,12 @@ class Writter:
         if len(queue) >= 2:
             print(f"Actual: {{name: {queue[0][1]}, offset:{queue[0][0]}}}")
             print(f"Next: {{name: {queue[1][1]}, offset:{queue[1][0]}}}")
+
+        
+        
+        self.date_request = datetime.now()   #Date of request
+        valid_date_past = self.date_request-relativedelta(seconds=timeout)
+        self.valid_date_future = self.date_request+relativedelta(seconds=timeout) #Project data in reason of timeout
         return True, "Success(Request)"
 
 
@@ -246,8 +252,8 @@ def routine(prefix_name, sufix_name, repeats, timeout, servers, topic, partition
         #Encode Object
         obj = account.toJson().encode()
 
-        # if random.random() > 0.85:
-        #     sleep(timeout+1)
+        if random.random() > 0.85:
+            sleep(timeout+1)
 
         #Commit
         success, msg = w1.commit_content(obj)
