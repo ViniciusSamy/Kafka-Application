@@ -1,4 +1,4 @@
-# SD
+# Kafka Application
 
 This program runs a Writter that operate on a protocol, this protocol is created to ensure integrity of Objects in distributed systems with competion and parallelism.
 
